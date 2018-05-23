@@ -1,0 +1,156 @@
+---
+title: "Shiny Ap: Old Faithful"
+author: "S Carroll"
+date: "May 22, 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+suppressWarnings(library(shiny))
+suppressWarnings(library(Rmisc))
+suppressWarnings(library(rsconnect))
+```
+
+## Old Faithful AP
+This presentation extends the R geyser demonstration dataset by adding custom features with Shiny, including:
+
+* Histogram bar color selection widget
+
+* Checkbox widgets to show calculated statistical parameters and real-time updating of histogram
+
+* Additional tabs to organize information 
+
+## 
+Initial Screen at Launch with Interactive Sidebar, Tabs, and Plotting Area
+```{r ap, fig.width= 4, fig.height=2}
+
+library(shiny)
+library(Rmisc)
+library(rsconnect)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+   
+   # Application title
+   titlePanel("Old Faithful Geyser Data"),
+   
+   # Sidebar with a slider input for number of bins 
+   sidebarLayout(
+      sidebarPanel(
+         sliderInput("bins",
+                     "Number of bins:",
+                     min = 1,
+                     max = 50,
+                     value = 30),
+         
+         selectInput(inputId = "bincolor", label = "Color",
+                     choices = c("red","yellow","blue","green","black"), selected = "green"),
+         
+         checkboxInput(inputId = "addmean", label = "Add mean line?", value = FALSE),
+         checkboxInput(inputId = "addCI", label = "Add mean and 95% CI?", value = FALSE),
+         checkboxInput(inputId = "addIQR", label = "Add median and interquartile range?", value = FALSE)     
+         
+      ),
+      
+      # Show a plot of the generated distribution
+      mainPanel(
+            tabsetPanel(type = "tabs",
+                        tabPanel("Histogram", plotOutput("distPlot")),  
+                        tabPanel("Summary",verbatimTextOutput("summary")),                            
+                        tabPanel("Description", 
+                                 h3("Source: "),
+                                 p(" R datasets from "),
+                                 p("Hardle, W. (1991) Smoothing Techniques with Implementation in S. New York: Springer"))                         
+            )
+            
+      )
+   )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+      
+   output$distPlot <- renderPlot({
+      # generate bins based on input$bins from ui.R
+      x    <- faithful[, 2] 
+      bins <- seq(min(x), max(x), length.out = input$bins + 1)
+      
+      # draw the histogram with the specified number of bins
+      hist(x, breaks = bins, col = input$bincolor, border = 'white',
+           main = "Old Faithful Geyser Data", xlab = "Time Between Eruptions (mins)") 
+      
+      if(input$addmean) {  # If the addmean box is checked...
+            
+            # Add a vertical line at the mean of x
+            abline(v = mean(x),
+                   lwd = 2,      # Thickness
+                   lty = 1)      # Solid line
+            
+      } # close if statement
+      
+      if(input$addCI) {  # If the addCI box is checked...
+            
+            # Add vertical lines for the 95% CI
+            abline(v = CI(x, ci = 0.95),
+                   lwd = 2,      # Thickness
+                   lty = 2)      # Dashed line
+            
+      } # close if statement     
+      
+      if(input$addIQR) {  # If the addIQR box is checked...
+            
+            # Add vertical lines for the 1Q,Median,3Q
+            abline(v = summary(x)[c(2,3,5)],
+                   lwd = 2,      # Thickness
+                   lty = 3)      # Dotted line
+            
+      } # close if statement     
+      
+   })
+   
+# for the summary tab
+   output$summary <- renderPrint({
+         x <- faithful[, 2]             
+         summary(x)
+   })    
+   
+   
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+```
+
+## How to Use
+
+This is handy if you are going to visit the geyser in Yellowstone Park, as the histogram gives an idea of how long to wait between eruptions of water. 
+
+* Refine the look of the histogram by providing input. Use the slider to change the bin size, or drop-down to change colors.  The histogram will react to your input and redraw itself.  
+
+* Check the boxes to see calculations for the average time waiting between eruptions, confidence intervals, or interquartile range (IQR).  The IQR gives waiting for about half of the time. 
+
+* Select the tabs to see a statistical summary or description with the datasource. 
+
+## Code snip
+
+As an example of R-code calculations, code to add the interquartile range looks like this
+
+      if(input$addIQR) {  # If the addIQR box is checked...
+            
+            # Add vertical lines for the 1Q,Median,3Q
+            abline(v = summary(x)[c(2,3,5)],
+                   lwd = 2,      # Thickness
+                   lty = 3)      # Dotted line 
+                   }      
+
+
+Enjoy and have fun with the ap! 
+
+It's located at https://scarr987.shinyapps.io/Geyser1/ 
+
+
+
+
