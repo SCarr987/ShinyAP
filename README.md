@@ -7,6 +7,10 @@ NOTES: the slide deck is at  http://rpubs.com/SCarr789/Geyser1
 
 NOTES: there are screenshots for reviewer's convenience 
 
+NOTES: also included is the R code for ap1.R.  Please use the link for the ap above to see it already rendered.
+
+NOTES: also included is the .rmd and .html files for the presentation, GeyserPresentation1.  Please use the link for the ap above to see it already rendered.
+
 This peer assessed assignment has two parts. First, you will create a Shiny application and deploy it on Rstudio's servers. Second, you will use Slidify or Rstudio Presenter to prepare a reproducible pitch presentation about your application.
 
 Your Shiny Application
