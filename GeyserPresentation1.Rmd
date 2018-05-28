@@ -1,0 +1,72 @@
+---
+title: "Shiny Ap: Old Faithful"
+author: "S Carroll"
+date: "May 28, 2018"
+output:
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+suppressWarnings(library(shiny))
+suppressWarnings(library(Rmisc))
+suppressWarnings(library(rsconnect))
+suppressWarnings(library(png))
+suppressWarnings(library(knitr))
+
+library(png)
+library(knitr)
+
+```
+
+## Old Faithful AP
+This presentation extends the R geyser demonstration dataset by adding custom features with Shiny, including:
+
+* Histogram bar color selection widget
+
+* Checkbox widgets to show calculated statistical parameters and real-time updating of histogram
+
+* Additional tabs to organize information 
+
+
+## Initial Screen at Launch | with Interactive Sidebar, Tabs, and Plotting Area
+
+```{r  out.width = "90%"}
+
+
+include_graphics('Screenshots/01-Initial.PNG')
+
+```
+
+
+## How to Use
+
+This is handy if you are going to visit the geyser in Yellowstone Park, as the histogram gives an idea of how long to wait between eruptions of water. 
+
+* Refine the look of the histogram by providing input. Use the slider to change the bin size, or drop-down to change colors.  The histogram will react to your input and redraw itself.  
+
+* Check the boxes to see calculations for the average time waiting between eruptions, confidence intervals, or interquartile range (IQR).  The IQR gives waiting for about half of the time. 
+
+* Select the tabs to see a statistical summary or description with the datasource. 
+
+## Code snip
+
+As an example of R-code calculations, code to add the interquartile range looks like this
+
+      if(input$addIQR) {  # If the addIQR box is checked...
+            
+            # Add vertical lines for the 1Q,Median,3Q
+            abline(v = summary(x)[c(2,3,5)],
+                   lwd = 2,      # Thickness
+                   lty = 3)      # Dotted line 
+                   }      
+
+
+Enjoy and have fun with the ap! 
+
+It's located at https://scarr987.shinyapps.io/Geyser1/ 
+
+
+
+
