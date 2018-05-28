@@ -1,10 +1,9 @@
 # ShinyAP
 Coursera Data Science - Developing Data Products - Create Shiny AP and Slidify Presentation
-** note ** some of these instructions are likely outdated, couldn't get presentation to upload to shiny server and rpubs doesn't render shiny
 
 NOTES: the shiny ap is at https://scarr987.shinyapps.io/Geyser1/
 
-NOTES: the slide deck is at  http://rpubs.com/SCarr789/Geyser1  note that the ap doesn't render inside of it
+NOTES: the slide deck is at  http://rpubs.com/SCarr789/Geyser1  
 
 NOTES: there are screenshots for reviewer's convenience 
 
